@@ -1,0 +1,10 @@
+__pycache__
+XAutoDL
+NATS_Bench_Code/__pycache__
+NATS_Bench_Code/datasets
+NATS_Bench_Code/evaluator/saved_models
+NATS_Bench_Code/profiled_nets
+NATS_Bench_Code/*.csv
+NATS_Bench_Code/evaluator/*.csv
+NATS_Bench_Code/evaluator/sss_history
+NATS_Bench_Code/evaluator/tss_history
