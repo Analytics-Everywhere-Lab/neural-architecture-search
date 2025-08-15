@@ -10,7 +10,7 @@ from torch import nn
 from torch.utils.data import Dataset, DataLoader
 from torch.optim import AdamW
 
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import T5Tokenizer, T5ForConditionalGeneration, DataCollatorWithPadding
 
 from utils import Encoder, MakeDataset
 
@@ -25,6 +25,7 @@ print(args)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 tokenizer = T5Tokenizer.from_pretrained('t5-base')
+data_collator = DataCollatorWithPadding(tokenizer=tokenizer, return_tensors="pt")  # Max add
 scaler = MinMaxScaler()
 
 df = pd.read_csv(f'../{args.search_space}_{args.dataset}.csv')
@@ -39,17 +40,21 @@ test = test.reset_index(drop=True)
 # Determines how the data is structured. Either (acc, lat) or (acc, mem)
 if args.metric == 'Latency':
     train_dataset = MakeDataset(train, tokenizer, scaler, latency=True, memory=False)
-    train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    # train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True, collate_fn=data_collator)  # Max change
 
     val_dataset = MakeDataset(val, tokenizer, scaler, latency=True, memory=False)
-    val_dataloader = DataLoader(val_dataset, batch_size=16, shuffle=True)
+    # val_dataloader = DataLoader(val_dataset, batch_size=16, shuffle=True)
+    val_dataloader = DataLoader(val_dataset, batch_size=16, shuffle=True, collate_fn=data_collator)  # Max change
 
 if args.metric == 'Memory':
     train_dataset = MakeDataset(train, tokenizer, scaler, latency=False, memory=True)
-    train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    # train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True, collate_fn=data_collator)  # Max change
 
     val_dataset = MakeDataset(val, tokenizer, scaler, latency=False, memory=True)
-    val_dataloader = DataLoader(val_dataset, batch_size=16, shuffle=True)
+    # val_dataloader = DataLoader(val_dataset, batch_size=16, shuffle=True)
+    val_dataloader = DataLoader(val_dataset, batch_size=16, shuffle=True, collate_fn=data_collator)  # Max change
 
 
 

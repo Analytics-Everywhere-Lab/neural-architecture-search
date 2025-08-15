@@ -9,13 +9,14 @@ from torch import nn
 from torch.utils.data import Dataset, DataLoader
 from torch.optim import AdamW
 
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import T5Tokenizer, T5ForConditionalGeneration, DataCollatorWithPadding
 
 from utils import EncoderDecoder, MakeDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 tokenizer = T5Tokenizer.from_pretrained('t5-base')
+data_collator = DataCollatorWithPadding(tokenizer=tokenizer, return_tensors="pt")  # Max add
 scaler = MinMaxScaler()
 
 df = pd.read_csv('trainset.csv')
@@ -30,10 +31,12 @@ train = df[:split_index]
 test = df[split_index:]
 
 train_dataset = MakeDataset(train, tokenizer, scaler)
-train_dataloader = DataLoader(train_dataset, batch_size=1, shuffle=True)
+# train_dataloader = DataLoader(train_dataset, batch_size=1, shuffle=True)
+train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True, collate_fn=data_collator)  # Max change
 
 test_dataset = MakeDataset(test, tokenizer, scaler)
-test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=True)
+# test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=16, shuffle=True, collate_fn=data_collator)  # Max change
 
 model = EncoderDecoder()
 # model = T5ForConditionalGeneration.from_pretrained('t5-base')

@@ -10,13 +10,14 @@ from torch import nn
 from torch.utils.data import Dataset, DataLoader
 from torch.optim import AdamW
 
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import T5Tokenizer, T5ForConditionalGeneration, DataCollatorWithPadding
 
 from utils import Encoder, MakeDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 tokenizer = T5Tokenizer.from_pretrained('t5-base')
+data_collator = DataCollatorWithPadding(tokenizer=tokenizer, return_tensors="pt")  # Max add
 scaler = MinMaxScaler()
 
 df = pd.read_csv('profiled_nets/fbnet_eyeriss.csv') # Replace as necessary
@@ -29,10 +30,10 @@ val = val.reset_index(drop=True)
 test = test.reset_index(drop=True)
 
 train_dataset = MakeDataset(train, tokenizer, scaler, accuracy=False) # Set score to True for NASWOT score, and latency true for latency metric
-train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True, collate_fn=data_collator)  # Max change
 
 val_dataset = MakeDataset(val, tokenizer, scaler, accuracy=False)
-val_dataloader = DataLoader(val_dataset, batch_size=16, shuffle=True)
+val_dataloader = DataLoader(val_dataset, batch_size=16, shuffle=True, collate_fn=data_collator)  # Max change
 
 model = Encoder(num_outputs=1)
 model.to(device)
