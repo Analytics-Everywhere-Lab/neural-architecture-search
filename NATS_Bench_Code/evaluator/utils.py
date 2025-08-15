@@ -4,7 +4,7 @@ import torch
 from torch.utils.data import Dataset
 
 # class EncoderDecoder(nn.Module):
-#     def __init__(self, model_name='t5-small'):
+#     def __init__(self, model_name='t5-base'):
 #         super(EncoderDecoder, self).__init__()
 #         self.model = T5Model.from_pretrained(model_name)
 #         self.encoder = self.model.encoder
@@ -59,7 +59,7 @@ class MakeDataset(Dataset):
 
 
 class EncoderDecoder(nn.Module):
-    def __init__(self, model_name='t5-small'):
+    def __init__(self, model_name='t5-base'):
         super(EncoderDecoder, self).__init__()
         self.model = T5Model.from_pretrained(model_name)
         self.encoder = self.model.encoder
@@ -84,7 +84,7 @@ class EncoderDecoder(nn.Module):
         return encoder_outputs, prediction_outputs, decoder_outputs, decoder_logits
     
 class Encoder(nn.Module):
-    def __init__(self, model_name='t5-small', num_outputs=2): # Vary the number of outputs according to how many target metrics you want
+    def __init__(self, model_name='t5-base', num_outputs=2): # Vary the number of outputs according to how many target metrics you want
         super(Encoder, self).__init__()
         self.model = T5Model.from_pretrained(model_name)
         self.encoder = self.model.encoder
