@@ -16,7 +16,7 @@ from utils import Encoder, MakeDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-tokenizer = T5Tokenizer.from_pretrained('t5-base')
+tokenizer = T5Tokenizer.from_pretrained('t5-large')
 scaler = MinMaxScaler()
 
 df = pd.read_csv('profiled_nets/fbnet_eyeriss.csv') # Replace as necessary

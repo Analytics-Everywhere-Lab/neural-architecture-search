@@ -22,7 +22,7 @@ args = parser.parse_args()
 print(args)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-tokenizer = T5Tokenizer.from_pretrained('t5-base')
+tokenizer = T5Tokenizer.from_pretrained('t5-large')
 scaler = MinMaxScaler()
 
 df = pd.read_csv(f'profiled_nets/{args.search_space}_{args.device}.csv')

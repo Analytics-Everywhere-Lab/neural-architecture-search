@@ -51,7 +51,7 @@ metrics_root = os.path.join(args.metrics_root, args.space)
 # We want to scale the value to what the model was trained on and get its median as max constraint  
 # ADDITIONAL CODE
 df = pd.read_csv(f'../../NATS_Bench_Code/tss_{args.dataset}.csv')
-tokenizer = T5Tokenizer.from_pretrained('t5-base')
+tokenizer = T5Tokenizer.from_pretrained('t5-large')
 encoder = Encoder()
 encoder.eval()
 

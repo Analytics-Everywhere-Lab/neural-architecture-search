@@ -15,7 +15,7 @@ from utils import EncoderDecoder, MakeDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-tokenizer = T5Tokenizer.from_pretrained('t5-base')
+tokenizer = T5Tokenizer.from_pretrained('t5-large')
 scaler = MinMaxScaler()
 
 df = pd.read_csv('trainset.csv')
@@ -36,7 +36,7 @@ test_dataset = MakeDataset(test, tokenizer, scaler)
 test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=True)
 
 model = EncoderDecoder()
-# model = T5ForConditionalGeneration.from_pretrained('t5-base')
+# model = T5ForConditionalGeneration.from_pretrained('t5-large')
 model.to(device)
 
 optimizer = AdamW(model.parameters(), lr=5e-5)
